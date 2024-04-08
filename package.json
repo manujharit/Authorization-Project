@@ -1,0 +1,14 @@
+{
+  "name": "authorization-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "cd ./client && npm install",
+    "start": "cd ./client && npm start",
+    "start:client": "cd ./client && npm start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
