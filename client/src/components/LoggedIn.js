@@ -1,6 +1,6 @@
 
 const LoggedIn = (props) => {
-    const { username } = props
+    const { user } = props
     return (
         <>
         <br/>
@@ -19,7 +19,7 @@ const LoggedIn = (props) => {
         <br/>
         <br/>
         <div className="d-flex justify-content-center align-items-center">
-        <h2>Welcome {username}</h2>
+        <h2>Welcome {user}</h2>
         </div>
         </>
     )

@@ -1,9 +1,4 @@
-export const setLoggedIn = (val) => ({
-    type:'LOGGEDIN',
-    payload: val
-})
-
-export const setUsername = (val) => ({
-    type: 'SET_USERNAME',
+export const setUser = (val) => ({
+    type: 'SET_USER',
     payload: val
 })

@@ -1,15 +1,15 @@
 import { useState } from 'react';
+import { validateUsername, validatePassword } from '../utils/validators';
+import { Link } from 'react-router-dom';
+import LoggedIn from './LoggedIn';
 
 const LoginPage = (props) => {
-
-    const {setUsername, setLoggedIn} = props
-
+    const { user, setUser } = props
+    const [loggedIn, setLoggedIn] = useState(false)
     const [disabled, setDisabled] = useState(false)
     const [state, setState] = useState({
-        username: '',
-        password: '',
-        error: '',
-        loggedIn: false
+        username: user,
+        password: ''
     })
 
     const handleUsernameChange = (event) => {
@@ -30,40 +30,29 @@ const LoginPage = (props) => {
 
     const handleLogin = () => {
         if (validateUsername(state.username)) {
-            setDisabled(true)
-            setState({
-                ...state,
-                error: ''
-            })
-            if(state.password === "") {
-                setState({
-                    ...state,
-                    error: ''
-                })
+            if (state.password === '') {
+                setDisabled(true)
             }
             else if (validatePassword(state.password)) {
-                setState({
-                    ...state,
-                    error: ''
-                })
+                setUser(state.username || state.username.split('@')[0])
                 setLoggedIn(true)
-                setUsername(state.username.split('@')[0])
-                
             } else {
+                alert("Invalid Username or Password")
                 setState({
                     ...state,
-                    error: 'password'
+                    password: ''
                 })
             }
         } else {
+            alert("Invalid Username")
             setState({
                 ...state,
-                error: 'username'
+                username: ''
             })
         }
     }
 
-    return (
+    return loggedIn ? <LoggedIn user={user} /> : (
         <div className="container d-flex justify-content-center align-items-center vh-100">
             <div className="card item-border" >
                 <div className="card-title text-center" style={{ margin: '30px 30px 10px 30px' }}>
@@ -73,22 +62,21 @@ const LoginPage = (props) => {
                     <p>
                         <label className="form-label">Enter Username/Email :</label>
                         <input type="text" className="form-control item-border" value={state.username} onChange={(e) => handleUsernameChange(e)} disabled={disabled} />
-                        {state.error === 'username' && <label style={{ color: "red" }}>Enter a valid Username</label>}
                     </p>
                     {
                         disabled && (
                             <p>
                                 <label className="form-label">Enter Password :</label>
                                 <input type="password" className="form-control item-border" value={state.password} onChange={(e) => handlePasswordChange(e)} />
-                                {state.error === 'password' && <label style={{ color: "red" }}>Enter a valid Password</label>}
-                                <br />
                             </p>
                         )
                     }
-                    <div className="d-flex justify-content-between">
-                        <button className="btn btn-dark" onClick={handleLogin}>Login</button>
-                        <button className="btn btn-dark" onClick={handleLogin}>Signup</button>
+                    <br/>
+                    <div className="d-flex justify-content-center">
+                        <button className="btn btn-dark" onClick={() => handleLogin()}>Login</button>
                     </div>
+                    <br/>
+                    <Link to="/signup" className='d-flex justify-content-center'>Click here to create a new account</Link>
                 </div>
 
             </div>

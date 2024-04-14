@@ -1,15 +1,13 @@
 import { legacy_createStore as createStore} from 'redux'
 
 const initialState = {
-    loggedIn: false,
-    username: ''
+    user: ''
 };
 
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'LOGGEDIN': return {...state, loggedIn : action.payload};
-        case 'SET_USERNAME': return {...state, username: action.payload};
+        case 'SET_USER': return {...state, user: action.payload};
         default: return state;
     }
 };

@@ -1,27 +1,38 @@
-// import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import React from "react";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom"; // Import createBrowserRouter, Outlet, and Route
 import LoginPage from "./components/LoginPage";
-import LoggedIn from "./components/LoggedIn";
 import SignUp from "./components/SignUp";
 import { connect } from "react-redux";
-import { setLoggedIn, setUsername } from "./redux/action";
+import { setUser } from "./redux/action";
 
+const App = ({ user, setUser }) => {
+    const appRouter = createBrowserRouter([
+        {
+            path: '/',
+            element: <Outlet />,
+            children: [
+                {
+                    path: '/',
+                    element: <LoginPage user={user} setUser={setUser} />
+                },
+                {
+                    path: '/signup',
+                    element: <SignUp setUser={setUser} />
+                }
+            ]
+        }
+    ]);
 
+    // Render the router directly
+    return <RouterProvider router={appRouter} />;
+};
 
-const App = (props) => {
-    const {loggedIn, username , setLoggedIn, setUsername} = props
-    // return loggedIn ? <LoggedIn username={username}/> : <LoginPage setUsername={setUsername} setLoggedIn={setLoggedIn}/>
-    return <SignUp/>
-}
-
-const mapStoreToProps = (state) => ({
-    username:state.username,
-    loggedIn: state.loggedIn
-})
+const mapStateToProps = (state) => ({
+    user: state.user
+});
 
 const mapDispatchToProps = {
-    setUsername,
-    setLoggedIn
-}
+    setUser,
+};
 
-
-export default connect(mapStoreToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
