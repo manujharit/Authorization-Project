@@ -43,7 +43,6 @@ const loginHandler = async (req, res, next) => {
 
 const signupHandler = async (req, res, next) => {
     try {
-        console.log(req.body)
         const body = req.body
         //decryption
         const { username } = body
