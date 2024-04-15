@@ -20,7 +20,6 @@ const signupSchema = Joi.object({
 }).required()
 
 const loginValidator = (req, res, next) => {
-    console.log(loginSchema.validate(req.body).error)
     if (loginSchema.validate(req.body).error) {
         res.status(400).json('Invalid Data')
     } else {
