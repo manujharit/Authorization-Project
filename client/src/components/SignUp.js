@@ -1,11 +1,14 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { validateSignUp } from "../utils/validators"
+import mailLogo from '../../assets/mailLogo.png'
+import passwordLogo from '../../assets/passwordLogo.png'
+import profileLogo from '../../assets/profileLogo.png'
 
 const SignUp = ({ setUser }) => {
+    const navigate = useNavigate()
 
-    const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
+    const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [repassword, setRepassword] = useState('')
@@ -13,11 +16,8 @@ const SignUp = ({ setUser }) => {
     const handleChange = (event, fieldName) => {
         event.preventDefault()
         switch (fieldName) {
-            case 'firstName':
-                setFirstName(event.target.value)
-                break;
-            case 'lastName':
-                setLastName(event.target.value)
+            case 'name':
+                setName(event.target.value)
                 break;
             case 'email':
                 setEmail(event.target.value)
@@ -33,66 +33,76 @@ const SignUp = ({ setUser }) => {
         }
     }
 
-    const handleSignUp = () => {
-        if (validateSignUp({ firstName, lastName, email, password, repassword })) {
+    const handleSignUp = (event) => {
+        event.preventDefault()
+        if (validateSignUp({ name, email, password, repassword })) {
             setUser(email)
-            window.open('/')
+            navigate('/')
         } else {
-            alert('The details are incorrect')
+            alert('Invalid Details')
         }
     }
 
     return (
-        <div className="container d-flex justify-content-center align-items-center vh-100">
-            <div className="card item-border" style={{ width: '500px' }}>
-                <div className="card-title text-center" style={{ margin: '30px 30px 10px 30px' }}>
-                    <h5><b>Welcome to Signup Page</b></h5>
-                </div>
-                <div className="card-body text-start" style={{ margin: '10px 30px 30px 30px' }}>
-                    <form>
-                        <div className="form-group">
-                            <label className="form-label" style={{ display: 'inline-block', width: '150px' }}>First Name:</label>
-                            <input type="text" className="form-control item-border" style={{ display: 'inline-block', width: 'calc(100% - 170px)' }} value={firstName} onChange={e => handleChange(e, 'firstName')} />
-                            <br />
-                            <br />
-                        </div>
-                        <div className="form-group">
-                            <label className="form-label" style={{ display: 'inline-block', width: '150px' }}>Last Name:</label>
-                            <input type="text" className="form-control item-border" style={{ display: 'inline-block', width: 'calc(100% - 170px)' }} value={lastName} onChange={e => handleChange(e, 'lastName')} />
-                            <br />
-                            <br />
-                        </div>
-                        <div className="form-group">
-                            <label className="form-label" style={{ display: 'inline-block', width: '150px' }}>Email:</label>
-                            <input type="text" className="form-control item-border" style={{ display: 'inline-block', width: 'calc(100% - 170px)' }} value={email} onChange={e => handleChange(e, 'email')} />
-                            <br />
-                            <br />
-                        </div>
-                        <div className="form-group">
-                            <label className="form-label" style={{ display: 'inline-block', width: '150px' }}>Password:</label>
-                            <input type="password" className="form-control item-border" style={{ display: 'inline-block', width: 'calc(100% - 170px)' }} value={password} onChange={e => handleChange(e, 'password')} />
-                            <br />
-                            <br />
-                        </div>
-                        <div className="form-group">
-                            <label className="form-label" style={{ display: 'inline-block', width: '150px' }}>Re-enter Password:</label>
-                            <input type="password" className="form-control item-border" style={{ display: 'inline-block', width: 'calc(100% - 170px)' }} value={repassword} onChange={e => handleChange(e, 'repassword')} />
-                            <br />
-                            <br />
-                            <br />
-                        </div>
-                        <div className="d-flex justify-content-center">
-                            <button className="btn btn-dark" onClick={() => handleSignUp()}>Submit</button>
-                            <br/>
-                            
-                        </div>
-                        <br/>
-                            <Link to="/" className="d-flex justify-content-center">Click here to Login</Link>
-                        
-                    </form>
-                </div>
+        <form className="form">
+            <div className='text-black text-left mb-10'>
+                <p className='font-bold text-2xl'>Welcome Back :)</p>
+                <p className='text-sm py-1'>To keep connected with us please singup.</p>
             </div>
-        </div>
+            <div className="flex mb-4 mt-4 shadow appearance-none border border-solid border-cyan-800 rounded justify-center items-center">
+                <img className='h-10 w-11 block rounded m-1 text-gray-700 font-bold text-xl bg-cyan-300' src={profileLogo} />
+                <input
+                    className=" w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="name"
+                    type="text"
+                    placeholder="Name"
+                    value={name}
+                    onChange={(e) => handleChange(e, 'name')}
+                />
+            </div>
+            <div className="flex mb-4 mt-4 shadow appearance-none border border-solid border-cyan-800 rounded justify-center items-center">
+                <img className='h-10 w-11 block rounded m-1 text-gray-700 font-bold text-xl bg-cyan-300' src={mailLogo} />
+                <input
+                    className=" w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="username"
+                    type="text"
+                    placeholder="Email"
+                    value={email} onChange={e => handleChange(e, 'email')}
+                />
+            </div>
+            <div className="flex mb-4 mt-6 shadow appearance-none border border-solid border-cyan-800 rounded justify-center items-center">
+                <img className='h-10 p-1 w-11 block rounded m-1 text-gray-700 font-bold text-xl bg-cyan-300' src={passwordLogo} />
+                <input
+                    className=" w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="password"
+                    type="password"
+                    placeholder="Password"
+                    value={password} onChange={e => handleChange(e, 'password')}
+                />
+            </div><div className="flex mb-4 mt-6 shadow appearance-none border border-solid border-cyan-800 rounded justify-center items-center">
+                <img className='h-10 p-1 w-11 block rounded m-1 text-gray-700 font-bold text-xl bg-cyan-300' src={passwordLogo} />
+                <input
+                    className=" w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="reenterpassword"
+                    type="password"
+                    placeholder="Re-enter Password"
+                    value={repassword} onChange={e => handleChange(e, 'repassword')}
+                />
+            </div>
+
+            <div className="flex items-center justify-center pt-4">
+                <button
+                    className="bg-cyan-400 hover:bg-cyan-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    type="button"
+                    onClick={(e) => handleSignUp(e)}
+                >
+                    Create Account
+                </button>
+            </div>
+            <div className='flex items-center justify-center pt-4'>
+                Already have an account?<Link to="/" className='text-blue-400 px-1 underline'>Login</Link>
+            </div>
+        </form>
 
 
     )

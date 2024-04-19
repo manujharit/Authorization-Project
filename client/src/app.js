@@ -4,12 +4,13 @@ import LoginPage from "./components/LoginPage";
 import SignUp from "./components/SignUp";
 import { connect } from "react-redux";
 import { setUser } from "./redux/action";
+import Body from "./components/Body";
 
 const App = ({ user, setUser }) => {
     const appRouter = createBrowserRouter([
         {
             path: '/',
-            element: <Outlet />,
+            element: <Body />,
             children: [
                 {
                     path: '/',
@@ -23,7 +24,6 @@ const App = ({ user, setUser }) => {
         }
     ]);
 
-    // Render the router directly
     return <RouterProvider router={appRouter} />;
 };
 

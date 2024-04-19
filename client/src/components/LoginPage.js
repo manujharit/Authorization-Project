@@ -1,86 +1,82 @@
 import { useState } from 'react';
-import { validateUsername, validatePassword } from '../utils/validators';
+import { validateLogin } from '../utils/validators';
 import { Link } from 'react-router-dom';
 import LoggedIn from './LoggedIn';
+import mailLogo from '../../assets/mailLogo.png'
+import passwordLogo from '../../assets/passwordLogo.png'
 
 const LoginPage = (props) => {
     const { user, setUser } = props
     const [loggedIn, setLoggedIn] = useState(false)
-    const [disabled, setDisabled] = useState(false)
-    const [state, setState] = useState({
-        username: user,
-        password: ''
-    })
+    const [email, setEmail] = useState(user)
+    const [password, setPassword] = useState('')
 
-    const handleUsernameChange = (event) => {
+
+    const handleEmailChange = (event) => {
         event.preventDefault()
-        setState({
-            ...state,
-            username: event.target.value
-        })
+        setEmail(event.target.value)
     }
 
     const handlePasswordChange = (event) => {
         event.preventDefault()
-        setState({
-            ...state,
-            password: event.target.value
-        })
+        setPassword(event.target.value)
     }
 
     const handleLogin = () => {
-        if (validateUsername(state.username)) {
-            if (state.password === '') {
-                setDisabled(true)
-            }
-            else if (validatePassword(state.password)) {
-                setUser(state.username || state.username.split('@')[0])
-                setLoggedIn(true)
-            } else {
-                alert("Invalid Username or Password")
-                setState({
-                    ...state,
-                    password: ''
-                })
-            }
-        } else {
-            alert("Invalid Username")
-            setState({
-                ...state,
-                username: ''
-            })
+        if (validateLogin({ email, password })) {
+            setUser(email)
+            setLoggedIn(true)
         }
     }
 
     return loggedIn ? <LoggedIn user={user} /> : (
-        <div className="container d-flex justify-content-center align-items-center vh-100">
-            <div className="card item-border" >
-                <div className="card-title text-center" style={{ margin: '30px 30px 10px 30px' }}>
-                    <h5><b>Welcome to Login Page</b></h5>
-                </div>
-                <div className="card-body text-start" style={{ margin: '10px 30px 30px 30px' }}>
-                    <p>
-                        <label className="form-label">Enter Username/Email :</label>
-                        <input type="text" className="form-control item-border" value={state.username} onChange={(e) => handleUsernameChange(e)} disabled={disabled} />
-                    </p>
-                    {
-                        disabled && (
-                            <p>
-                                <label className="form-label">Enter Password :</label>
-                                <input type="password" className="form-control item-border" value={state.password} onChange={(e) => handlePasswordChange(e)} />
-                            </p>
-                        )
-                    }
-                    <br/>
-                    <div className="d-flex justify-content-center">
-                        <button className="btn btn-dark" onClick={() => handleLogin()}>Login</button>
-                    </div>
-                    <br/>
-                    <Link to="/signup" className='d-flex justify-content-center'>Click here to create a new account</Link>
-                </div>
-
+        <form className="form">
+            <div className='text-black text-left mb-10'>
+                <p className='font-bold text-2xl'>Welcome :)</p>
+                <p className='text-sm py-1'>To keep connected with us please login with your credentials.</p>
             </div>
-        </div>
+            <div className="flex mb-4 mt-4 shadow appearance-none border border-solid border-cyan-800 rounded justify-center items-center">
+                <img className='h-10 w-11 block rounded m-1 text-gray-700 font-bold text-xl bg-cyan-300' src={mailLogo} />
+                <input
+                    className=" w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="email"
+                    type="text"
+                    placeholder="Email"
+                    value={email} onChange={(e) => handleEmailChange(e)}
+                />
+            </div>
+            <div className="flex mb-4 mt-6 shadow appearance-none border border-solid border-cyan-800 rounded justify-center items-center">
+                <img className='h-10 p-1 w-11 block rounded m-1 text-gray-700 font-bold text-xl bg-cyan-300' src={passwordLogo} />
+                <input
+                    className=" w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="password"
+                    type="password"
+                    placeholder="Password"
+                    value={password} onChange={(e) => handlePasswordChange(e)}
+                />
+            </div>
+            <div className='flex mb-4'>
+                <label className="flex w-1/2 justify-start">
+                    <input type='checkbox' className="mr-2" />
+                    <span className='text-xs text-gray-400'>Remember Me</span>
+                </label>
+                <label className="flex w-1/2 justify-end">
+                    <span className='text-xs text-blue-400 underline'>Forgot Password?</span>
+                </label>
+            </div>
+            <div className="flex items-center justify-center">
+                <button
+                    className="bg-cyan-400 hover:bg-cyan-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    type="button"
+                    onClick={() => handleLogin()}
+                >
+                    Login
+                </button>
+            </div>
+            <div className='flex items-center justify-center pt-4'>
+                Don't have an account?<Link to="/signup" className='text-blue-400 px-1 underline'>Create</Link>
+            </div>
+        </form>
     )
 }
 
