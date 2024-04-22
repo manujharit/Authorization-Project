@@ -1,23 +1,24 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 
 const useScreenSize = () => {
-    const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
 
-    useEffect(() => {
-        const handleResize = () => {
-            const { innerWidth } = window;
-            setIsMobileOrTablet(innerWidth > 1024); // Adjust this value based on your tablet breakpoint
-        };
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 1024px)');
+    setIsMobileOrTablet(mediaQuery.matches);
 
-        handleResize(); // Initial call to set the initial state
-        window.addEventListener('resize', handleResize);
+    const handleChange = (e) => {
+      setIsMobileOrTablet(e.matches);
+    };
 
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
+    mediaQuery.addEventListener('change', handleChange);
 
-    return isMobileOrTablet;
-}
+    return () => {
+      mediaQuery.removeEventListener('change', handleChange);
+    };
+  }, []);
 
-export default useScreenSize
+  return isMobileOrTablet;
+};
+
+export default useScreenSize;

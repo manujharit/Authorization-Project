@@ -1,18 +1,26 @@
 {
   "name": "authorization-project",
   "version": "1.0.0",
-  "description": "",
+  "description": "A simple authorization project using React and Node.js",
   "main": "index.js",
   "scripts": {
-    "postinstall": "cd client && npm install && cd .. && cd server && npm install",
+    "postinstall": "cd client && npm install && cd ../server && npm install",
     "start": "concurrently \"npm run start:client\" \"npm run start:server\"",
     "start:client": "cd client && npm start",
-    "start:server":"cd server && npm start",
+    "start:server": "cd server && npm start",
+    "stop": "pkill node",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/manujharit/Authorization-Project.git"
+  },
+  "author": ["Manuj Haritwal", "Mudit Bhargava"],
   "license": "ISC",
   "dependencies": {
     "concurrently": "^8.2.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
   }
 }

@@ -1,21 +1,46 @@
-import React from 'react'
-import sidebg from '../../assets/sidebg.png'
-import useScreenSize from '../hooks/useScreenSize';
+import React from 'react';
+import styled from 'styled-components';
+import { useMediaQuery } from 'react-responsive';
 import { Outlet } from 'react-router-dom';
-import useScreenSize from '../hooks/useScreenSize';
+import sidebg from '../../assets/sidebg.png';
+
+const BodyContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+`;
+
+const SideImage = styled.img`
+  width: 90%;
+`;
+
+const FormContainer = styled.div`
+  background-color: white;
+  border-radius: 8px;
+  height: 400px;
+  width: 400px;
+  justify-content: center;
+  align-items: center;
+  margin: 0 10px;
+`;
 
 const Body = () => {
-    const isMobileOrTablet = useScreenSize()
-    return (
-        <div className="flex justify-center items-center h-screen w-screen">
-            {isMobileOrTablet && (<div className="md:w-8/12 px-48 ">
-                <img className="w-90" src={sidebg} alt="Sample" />
-            </div>)}
-            <div className={`md:w-${isMobileOrTablet ? 'full' : '4/12'} bg-white rounded h-96 w-96 justify-center items-center mx-10`}>
-                <Outlet />
-            </div>
-        </div>
-    )
-}
+  const isMobileOrTablet = useMediaQuery({ maxWidth: 1024 });
 
-export default Body
+  return (
+    <BodyContainer>
+      {isMobileOrTablet && (
+        <div className="side-image-container">
+          <SideImage src={sidebg} alt="Sample" />
+        </div>
+      )}
+      <FormContainer>
+        <Outlet />
+      </FormContainer>
+    </BodyContainer>
+  );
+};
+
+export default Body;

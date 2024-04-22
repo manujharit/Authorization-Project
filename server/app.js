@@ -5,8 +5,7 @@ const app = express()
 
 app.use(bodyParser.json())
 app.use('/',router)
-const port = process.env.PORT || 3000
-
-app.listen(port, ( )=> {
-    console.log(`Server is running at PORT: ${port} ...`)
-})
+const port = process.env.PORT || 3002;
+app.listen(port, () => {
+  console.log(`Server is running at PORT: ${port} ...`);
+});
