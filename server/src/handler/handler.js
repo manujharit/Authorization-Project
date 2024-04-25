@@ -1,61 +1,39 @@
-const Model = require('../model/model')
+const MongoClient = require('../model/mongoClient')
 
 const loginHandler = async (req, res, next) => {
     try {
         const body = req.body
         //Decryption happens here
-        const { username, email, password } = body
-        if (username) {
-            const user = await Model.find({ username: username }, { _id: 0, _v: 0 })
-            if (!password) {
-                if (user.length) {
-                    res.status(200).json('Valid User')
-                } else {
-                    res.status(404).json('Username Not Found')
-                }
-            } else {
-                if (password === user[0].password) {
-                    res.status(200).json('Authenticated')
-                } else {
-                    res.status(401).json('Unauthorized')
-                }
-            }
-        } else if (email) {
-            const user = await Model.find({ email: email }, { _id: 0, _v: 0 })
-            if (!password) {
-                if (user.length) {
-                    res.status(200).json('Valid User')
-                } else {
-                    res.status(404).json('Username Not Found')
-                }
-            } else {
-                if (password === user[0].password) {
-                    res.status(200).json('Authenticated')
-                } else {
-                    res.status(401).json('Unauthorized')
-                }
-            }
-        }
-    } catch (err) {
-        res.send(500).json(err.message)
-    }
-}
-
-const signupHandler = async (req, res, next) => {
-    try {
-        const body = req.body
-        //decryption
-        const { username } = body
-        const user = await Model.find({ username: username }, { _id: 0, _v: 0 })
-        if (user.length) {
-            res.status(409).json('Username already exists')
-        } else {
-            await Model.create(body)
-            res.status(201).json('Created')
+        const { email } = body
+        if (email) {
+            const message = await MongoClient.loginUser(body)
+            res.status(message.statusCode).json(message?.message)
         }
     } catch (err) {
         res.status(500).json(err.message)
     }
 }
 
-module.exports = { loginHandler, signupHandler }
+const signupHandler = async (req, res, next) => {
+    try {
+        const user = req.body
+        //decryption
+        const resp = await MongoClient.signupUser(user)
+        res.status(resp.statusCode).json(resp.message)
+
+    } catch (err) {
+        res.status(500).json(err.message)
+    }
+}
+
+const checkEmailHandler = async (req, res, next) => {
+    try {
+        const { email } = req.body
+        const resp = await MongoClient.checkEmail(email)
+        res.status(200).json({ checkEmail: resp })
+    } catch (err) {
+        res.status(500).json(err.message)
+    }
+}
+
+module.exports = { loginHandler, signupHandler, checkEmailHandler }

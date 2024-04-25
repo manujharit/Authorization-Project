@@ -1,5 +1,5 @@
-const validateUsername = (value) => {
-    const regex = /^[a-zA-Z0-9]+(?:@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})?$/
+const validateName = (value) => {
+    const regex = /[a-zA-Z]{1,40}/
     return regex.test(value)
 }
 
@@ -8,8 +8,19 @@ const validatePassword = (value) => {
     return regex.test(value)
 }
 
-export const validateSignUp = ({ username, email, password, repassword }) => {
-    if (validateUsername(username) && validateEmail(email) && validatePassword(password) && validatePassword(repassword)) {
+const validatePin = (value) => {
+    const regex = /[0-9]{6}/
+    return regex.test(value)
+}
+
+export const validateEmail = (val) => {
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    return regex.test(val)
+}
+
+export const validateSignUp = ({ name, emailId, pin, password, repassword }) => {
+    if (emailId && !name && !pin && !password && !repassword) return validateEmail(emailId)
+    if (validateName(name) && validateEmail(emailId) && validatePin(pin) && validatePassword(password) && validatePassword(repassword)) {
         if (password === repassword) {
             return true;
         }
@@ -20,14 +31,11 @@ export const validateSignUp = ({ username, email, password, repassword }) => {
     }
 }
 
-export const validateLogin = ({ email, password }) => {
-    if (validateEmail(email) && validatePassword(password)) {
-        return true
-    }
+export const validateLogin = ({ emailId, pin, password }) => {
+    if (emailId && !pin && !password) return validateEmail(emailId)
+    if (emailId && pin && !password) return validateEmail(emailId) && validatePin(pin)
+    if (emailId && pin && password) return validateEmail(emailId) && validatePin(pin) && validatePassword(password)
+    alert('Incorrect details')
     return false
 }
 
-const validateEmail = (val) => {
-    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-    return regex.test(val)
-}
