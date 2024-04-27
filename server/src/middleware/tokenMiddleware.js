@@ -3,7 +3,7 @@ const { SECRETKEY } = require('../config/config')
 const { decrypt } = require('../../../lib/crypto')
 
 const authenticateToken = async (req, res, next) => {
-    const token = decrypt(req.headers['authorization'])
+    const token = decrypt(req.headers['OAuthToken'])
 
     if (!token) {
         return res.status(401).json({ error: 'Unauthorized' })

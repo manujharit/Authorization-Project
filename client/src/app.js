@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { setUser, setEmail } from "./redux/action";
 import Body from "./components/Body";
 
-const App = ({ user, setUser, email, setEmail }) => {
+const App = ({ email, setEmail }) => {
     const appRouter = createBrowserRouter([
         {
             path: '/',
@@ -14,7 +14,7 @@ const App = ({ user, setUser, email, setEmail }) => {
             children: [
                 {
                     path: '/',
-                    element: <LoginPage user={user} setUser={setUser} email={email} />
+                    element: <LoginPage  email={email} />
                 },
                 {
                     path: '/signup',
@@ -27,12 +27,10 @@ const App = ({ user, setUser, email, setEmail }) => {
 };
 
 const mapStateToProps = (state) => ({
-    user: state.user,
     email: state.email
 });
 
 const mapDispatchToProps = {
-    setUser,
     setEmail
 };
 

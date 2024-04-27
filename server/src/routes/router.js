@@ -1,7 +1,7 @@
 const express = require('express')
 const { loginValidator, signupValidator, checkEmailValidator } = require('../validator/validator')
 const { loginHandler, signupHandler, checkEmailHandler, accessTokenHandler } = require('../handler/handler');
-const {authenticateToken} = require('../middleware/tokenMiddleware')
+const { authenticateToken } = require('../middleware/tokenMiddleware')
 
 const router = express.Router();
 

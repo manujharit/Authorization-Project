@@ -8,7 +8,7 @@ import Pin from './Pin'
 import Password from './Password';
 
 const LoginPage = (props) => {
-    const { user, setUser, email } = props
+    const { email } = props
     const errMessage = "We couldn't find an account with that username. Please Sign Up or try another"
     const [step, setStep] = useState(1)
     const [error, setError] = useState(false)
@@ -18,7 +18,6 @@ const LoginPage = (props) => {
     const [password, setPassword] = useState('')
 
     const handleLogin = async () => {
-        console.log(validateLogin({ emailId, pin, password }))
         if (validateLogin({ emailId, pin, password })) {
             if (step === 1) {
                 const resp = await checkEmail(emailId)
@@ -30,7 +29,7 @@ const LoginPage = (props) => {
                 }
             }
             if (step === 2) {
-                const resp = await login({ email:emailId, pin })
+                const resp = await login({ email: emailId, pin })
                 if (resp.status !== 200) {
                     setError(true)
                 } else {
@@ -39,20 +38,19 @@ const LoginPage = (props) => {
                 }
             }
             if (step === 3) {
-                const resp = await login({ email:emailId, pin, password })
+                const resp = await login({ email: emailId, pin, password })
                 if (resp.status !== 200) {
                     setError(true)
-                } else {
+                } else if (resp.data.token) {
+                    localStorage.setItem('OAuthToken', resp.data.token)
                     setError(false)
-                    setUser(resp.data)
                     setLoggedIn(true)
                 }
             }
-
         }
     }
 
-    return loggedIn ? <LoggedIn user={user} /> : (
+    return loggedIn ? <LoggedIn /> : (
         <form className="form">
             <div className='text-black text-left mb-10'>
                 <p className='font-bold text-2xl'>Welcome :)</p>

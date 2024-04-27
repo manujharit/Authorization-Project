@@ -1,7 +1,7 @@
 const { checkUserCred, postUserCred, getJwt } = require('../helper/helper')
 const { checkEmail } = require('../lib/mongoClient')
-
-const { encrypt, decrypt } = require('../../../lib/crypto')
+const { encrypt } = require('../../../lib/crypto')
+const opn = require('opn');
 
 const loginHandler = async (req, res, next) => {
     try {
@@ -19,7 +19,6 @@ const loginHandler = async (req, res, next) => {
 const signupHandler = async (req, res, next) => {
     try {
         const user = req.body
-        //decryption
         const resp = await postUserCred(user)
         res.status(resp.statusCode).json(resp.message)
     } catch (err) {
