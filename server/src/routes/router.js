@@ -1,6 +1,7 @@
 const express = require('express')
 const { loginValidator, signupValidator, checkEmailValidator } = require('../validator/validator')
 const { loginHandler, signupHandler, checkEmailHandler } = require('../handler/handler');
+const {authenticateToken} = require('../middleware/tokenMiddleware')
 
 const router = express.Router();
 
@@ -21,6 +22,12 @@ router.post(
     checkEmailValidator,
     checkEmailHandler
 
+)
+
+router.post(
+    '/access',
+    authenticateToken,
+    // accessTokenHandler
 )
 
 module.exports = router;
