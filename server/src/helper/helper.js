@@ -1,4 +1,4 @@
-const { getUser, postUser } = require('../lib/mongoClient')
+const { checkUser, postUser } = require('../lib/mongoClient')
 const jwt = require('jsonwebtoken')
 const { SECRETKEY } = require('../config/config')
 const { hashPassword } = require('../../../lib/crypto')
@@ -12,7 +12,7 @@ const checkUserCred = async (body) => {
         if ((user && !pin && !password) || (user && pin && !password)) return { statusCode: 200 };
         if ((!user && !pin && !password) || (!user && pin && !password) || (!user && pin && password)) return { statusCode: 401 };
 
-        const token = jwt.sign({ email: user.email, name: user.name }, SECRETKEY, { expiresIn: '1h' })
+        const token = jwt.sign({ user:{ email: user.email, name: user.name} }, SECRETKEY, { expiresIn: '1h' })
 
 
         return { statusCode: 200, token: token };
@@ -36,9 +36,10 @@ const postUserCred = async ({ name, email, pin, password }) => {
     }
 }
 
-const getJwt = async(user) => {
-    return jwt.sign({email:user.email,name:user.name}, SECRETKEY)
+const getJwt = async (user) => {
+    const jwtToken = jwt.sign({ email: user.email, name: user.name }, SECRETKEY)
+    return jwtToken
 }
 
 
-module.exports = { checkUserCred, postUserCred , getJwt}
+module.exports = { checkUserCred, postUserCred, getJwt }

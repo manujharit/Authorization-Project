@@ -33,7 +33,7 @@ const checkEmail = async (email) => {
     }
 }
 
-const getUser = async ({ email, pin, password }) => {
+const checkUser = async ({ email, pin, password }) => {
     try {
 
         const collection = await init()
@@ -67,4 +67,4 @@ const postUser = async (user) => {
     }
 };
 
-module.exports = { getUser, postUser, checkEmail };
+module.exports = { checkUser, postUser, checkEmail };

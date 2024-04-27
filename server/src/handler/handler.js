@@ -39,10 +39,12 @@ const checkEmailHandler = async (req, res, next) => {
 
 const accessTokenHandler = async (req, res, next) => {
     try {
-        res.status(200).json({ id: getJwt(req.user) })
+        const user = req.user.user
+        const jwtToken = await getJwt(user)
+        res.status(200).json({ id: jwtToken })
     } catch (err) {
         res.status(500).json({ error: err.message })
     }
 }
 
-module.exports = { loginHandler, signupHandler, checkEmailHandler }
+module.exports = { loginHandler, signupHandler, checkEmailHandler, accessTokenHandler }
